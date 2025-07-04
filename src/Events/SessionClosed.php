@@ -1,13 +1,13 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Events;
+namespace ADReece\LaracordLiveChat\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Swoopy\LaracordLiveChat\Models\ChatSession;
+use ADReece\LaracordLiveChat\Models\ChatSession;
 
 class SessionClosed implements ShouldBroadcast
 {

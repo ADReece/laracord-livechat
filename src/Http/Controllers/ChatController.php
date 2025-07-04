@@ -1,12 +1,12 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Http\Controllers;
+namespace ADReece\LaracordLiveChat\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Swoopy\LaracordLiveChat\Services\ChatService;
-use Swoopy\LaracordLiveChat\Http\Requests\SendMessageRequest;
-use Swoopy\LaracordLiveChat\Http\Requests\StartSessionRequest;
+use ADReece\LaracordLiveChat\Services\ChatService;
+use ADReece\LaracordLiveChat\Http\Requests\SendMessageRequest;
+use ADReece\LaracordLiveChat\Http\Requests\StartSessionRequest;
 
 class ChatController extends Controller
 {

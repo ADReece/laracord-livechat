@@ -1,6 +1,6 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Models;
+namespace ADReece\LaracordLiveChat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;

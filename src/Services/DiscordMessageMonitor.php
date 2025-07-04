@@ -1,9 +1,9 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Services;
+namespace ADReece\LaracordLiveChat\Services;
 
-use Swoopy\LaracordLiveChat\Models\ChatSession;
-use Swoopy\LaracordLiveChat\Models\ChatMessage;
+use ADReece\LaracordLiveChat\Models\ChatSession;
+use ADReece\LaracordLiveChat\Models\ChatMessage;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
 
@@ -111,7 +111,7 @@ class DiscordMessageMonitor
             ]);
 
             // Fire event for real-time updates
-            event(new \Swoopy\LaracordLiveChat\Events\MessageSent($chatMessage));
+            event(new \ADReece\LaracordLiveChat\Events\MessageSent($chatMessage));
 
             Log::info('Agent message processed from Discord', [
                 'session_id' => $session->id,

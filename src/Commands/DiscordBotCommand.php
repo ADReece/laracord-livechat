@@ -1,6 +1,6 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Commands;
+namespace ADReece\LaracordLiveChat\Commands;
 
 use Illuminate\Console\Command;
 use GuzzleHttp\Client;
@@ -84,6 +84,11 @@ class DiscordBotCommand extends Command
             $this->line('• Each new chat creates a dedicated Discord channel');
             $this->line('• Simply type messages in the channel to reply to customers');
             $this->line('• Channels are automatically deleted when chats are closed');
+            $this->info('');
+            $this->info('📅 Discord Monitoring:');
+            $this->line('• The package automatically monitors Discord channels via Laravel scheduler');
+            $this->line('• Make sure your cron is set up: php artisan schedule:run');
+            $this->line('• Check status with: php artisan laracord-chat:schedule-status');
 
         } catch (\Exception $e) {
             $this->error('Failed to set up Discord commands: ' . $e->getMessage());

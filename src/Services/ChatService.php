@@ -1,12 +1,12 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Services;
+namespace ADReece\LaracordLiveChat\Services;
 
-use Swoopy\LaracordLiveChat\Models\ChatSession;
-use Swoopy\LaracordLiveChat\Models\ChatMessage;
-use Swoopy\LaracordLiveChat\Events\MessageSent;
-use Swoopy\LaracordLiveChat\Events\SessionStarted;
-use Swoopy\LaracordLiveChat\Events\SessionClosed;
+use ADReece\LaracordLiveChat\Models\ChatSession;
+use ADReece\LaracordLiveChat\Models\ChatMessage;
+use ADReece\LaracordLiveChat\Events\MessageSent;
+use ADReece\LaracordLiveChat\Events\SessionStarted;
+use ADReece\LaracordLiveChat\Events\SessionClosed;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Str;
 

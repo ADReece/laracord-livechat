@@ -48,7 +48,7 @@ laracord-live-chat/
 
 1. **Install via Composer** (when published):
    ```bash
-   composer require swoopy/laracord-live-chat
+   composer require adreece/laracord-live-chat
    ```
 
 2. **Run the installation command**:

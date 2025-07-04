@@ -66,6 +66,26 @@ return [
 
     /*
     |--------------------------------------------------------------------------
+    | Scheduler Configuration
+    |--------------------------------------------------------------------------
+    |
+    | Configure how often the package should check for new Discord messages
+    | and perform maintenance tasks
+    |
+    */
+    'scheduler' => [
+        'discord_monitoring' => [
+            'enabled' => env('LARACORD_DISCORD_MONITORING_ENABLED', true),
+            'frequency' => env('LARACORD_DISCORD_MONITORING_FREQUENCY', 'everyMinute'), // everyMinute, everyTwoMinutes, everyFiveMinutes
+        ],
+        'cleanup' => [
+            'enabled' => env('LARACORD_CLEANUP_ENABLED', true),
+            'time' => env('LARACORD_CLEANUP_TIME', '02:00'), // Daily cleanup time
+        ],
+    ],
+
+    /*
+    |--------------------------------------------------------------------------
     | Storage Configuration
     |--------------------------------------------------------------------------
     |

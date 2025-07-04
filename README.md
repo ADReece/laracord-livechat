@@ -17,7 +17,7 @@ A Laravel package that enables live chat functionality where customer messages a
 1. Install the package via Composer:
 
 ```bash
-composer require swoopy/laracord-live-chat
+composer require adreece/laracord-live-chat
 ```
 
 2. Run the installation command:
@@ -45,14 +45,17 @@ BROADCAST_DRIVER=pusher
 php artisan laracord-chat:setup-discord
 ```
 
-5. Start the Discord message monitor:
+5. **Important**: Set up Laravel's task scheduler (required for Discord monitoring):
+
+Add this to your server's crontab:
+```bash
+* * * * * cd /path/to/your/project && php artisan schedule:run >> /dev/null 2>&1
+```
+
+6. Check that everything is working:
 
 ```bash
-# Run continuously
-php artisan laracord-chat:monitor-discord
-
-# Or run once (useful for cron jobs)
-php artisan laracord-chat:monitor-discord --once
+php artisan laracord-chat:schedule-status
 ```
 
 ## Usage
@@ -80,12 +83,25 @@ Available slash commands:
 - `/sessions` - List active chat sessions with their channels
 - `/close [session_id]` - Close a chat session and delete its channel
 
-### Setting Up Cron Jobs (Recommended)
+### Scheduler Configuration
 
-Add this to your crontab for automatic message monitoring:
+The package automatically schedules tasks using Laravel's built-in scheduler:
 
+- **Discord monitoring**: Checks for new messages every minute (configurable)
+- **Session cleanup**: Removes old sessions daily at 2:00 AM (configurable)
+
+You can customize the scheduler behavior in your `.env` file:
+
+```env
+LARACORD_DISCORD_MONITORING_ENABLED=true
+LARACORD_DISCORD_MONITORING_FREQUENCY=everyMinute  # everyMinute, everyTwoMinutes, everyFiveMinutes
+LARACORD_CLEANUP_ENABLED=true
+LARACORD_CLEANUP_TIME=02:00
+```
+
+Check scheduler status anytime:
 ```bash
-* * * * * cd /path/to/your/project && php artisan laracord-chat:monitor-discord --once
+php artisan laracord-chat:schedule-status
 ```
 
 ## Configuration

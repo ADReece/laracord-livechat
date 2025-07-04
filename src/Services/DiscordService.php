@@ -1,11 +1,11 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Services;
+namespace ADReece\LaracordLiveChat\Services;
 
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Swoopy\LaracordLiveChat\Models\ChatSession;
-use Swoopy\LaracordLiveChat\Models\ChatMessage;
+use ADReece\LaracordLiveChat\Models\ChatSession;
+use ADReece\LaracordLiveChat\Models\ChatMessage;
 use Illuminate\Support\Facades\Log;
 
 class DiscordService

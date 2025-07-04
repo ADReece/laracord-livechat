@@ -1,11 +1,11 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat;
+namespace ADReece\LaracordLiveChat;
 
 use Illuminate\Support\ServiceProvider;
-use Swoopy\LaracordLiveChat\Services\DiscordService;
-use Swoopy\LaracordLiveChat\Services\ChatService;
-use Swoopy\LaracordLiveChat\Services\DiscordMessageMonitor;
+use ADReece\LaracordLiveChat\Services\DiscordService;
+use ADReece\LaracordLiveChat\Services\ChatService;
+use ADReece\LaracordLiveChat\Services\DiscordMessageMonitor;
 
 class LaracordLiveChatServiceProvider extends ServiceProvider
 {
@@ -43,6 +43,40 @@ class LaracordLiveChatServiceProvider extends ServiceProvider
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'laracord-live-chat');
 
+        // Schedule Discord message monitoring
+        $this->app->booted(function () {
+            $schedule = $this->app->make(\Illuminate\Console\Scheduling\Schedule::class);
+            
+            // Monitor Discord channels based on configuration
+            if (config('laracord-live-chat.scheduler.discord_monitoring.enabled', true)) {
+                $frequency = config('laracord-live-chat.scheduler.discord_monitoring.frequency', 'everyMinute');
+                
+                $job = $schedule->job(\ADReece\LaracordLiveChat\Jobs\MonitorDiscordMessages::class)
+                    ->withoutOverlapping()
+                    ->runInBackground();
+                
+                // Apply frequency based on config
+                switch ($frequency) {
+                    case 'everyTwoMinutes':
+                        $job->everyTwoMinutes();
+                        break;
+                    case 'everyFiveMinutes':
+                        $job->everyFiveMinutes();
+                        break;
+                    default:
+                        $job->everyMinute();
+                        break;
+                }
+            }
+            
+            // Clean up old sessions daily
+            if (config('laracord-live-chat.scheduler.cleanup.enabled', true)) {
+                $schedule->job(\ADReece\LaracordLiveChat\Jobs\CleanupChatSessions::class)
+                    ->daily()
+                    ->at(config('laracord-live-chat.scheduler.cleanup.time', '02:00'));
+            }
+        });
+
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__ . '/../config/laracord-live-chat.php' => config_path('laracord-live-chat.php'),
@@ -56,6 +90,7 @@ class LaracordLiveChatServiceProvider extends ServiceProvider
                 Commands\InstallCommand::class,
                 Commands\DiscordBotCommand::class,
                 Commands\MonitorDiscordChannelsCommand::class,
+                Commands\ScheduleStatusCommand::class,
             ]);
         }
     }

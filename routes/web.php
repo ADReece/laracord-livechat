@@ -1,8 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Swoopy\LaracordLiveChat\Http\Controllers\ChatController;
-use Swoopy\LaracordLiveChat\Http\Controllers\DiscordController;
+use ADReece\LaracordLiveChat\Http\Controllers\ChatController;
+use ADReece\LaracordLiveChat\Http\Controllers\DiscordController;
 
 // Chat API routes
 Route::prefix('api/laracord-chat')->group(function () {

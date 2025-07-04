@@ -1,6 +1,6 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Http\Requests;
+namespace ADReece\LaracordLiveChat\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

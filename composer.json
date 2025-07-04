@@ -23,18 +23,18 @@
     },
     "autoload": {
         "psr-4": {
-            "Swoopy\\LaracordLiveChat\\": "src/"
+            "ADReece\\LaracordLiveChat\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Swoopy\\LaracordLiveChat\\Tests\\": "tests/"
+            "ADReece\\LaracordLiveChat\\Tests\\": "tests/"
         }
     },
     "extra": {
         "laravel": {
             "providers": [
-                "Swoopy\\LaracordLiveChat\\LaracordLiveChatServiceProvider"
+                "ADReece\\LaracordLiveChat\\LaracordLiveChatServiceProvider"
             ]
         }
     },

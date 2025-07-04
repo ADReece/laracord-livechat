@@ -1,6 +1,6 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Events;
+namespace ADReece\LaracordLiveChat\Events;
 
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\InteractsWithSockets;
@@ -8,7 +8,7 @@ use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;
-use Swoopy\LaracordLiveChat\Models\ChatMessage;
+use ADReece\LaracordLiveChat\Models\ChatMessage;
 
 class MessageSent implements ShouldBroadcast
 {

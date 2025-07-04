@@ -1,10 +1,10 @@
 <?php
 
-namespace Swoopy\LaracordLiveChat\Http\Controllers;
+namespace ADReece\LaracordLiveChat\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Swoopy\LaracordLiveChat\Services\ChatService;
+use ADReece\LaracordLiveChat\Services\ChatService;
 
 class DiscordController extends Controller
 {
