@@ -15,8 +15,9 @@ class SendMessageRequest extends FormRequest
     {
         return [
             'session_id' => 'required|uuid|exists:chat_sessions,id',
-            'message' => 'required|string|max:2000',
-            'name' => 'nullable|string|max:255',
+            'content' => 'required|string|max:2000', // Fixed: using 'content' instead of 'message'
+            'sender_type' => 'required|in:customer,agent', // Added missing validation
+            'sender_name' => 'nullable|string|max:255', // Fixed: using 'sender_name' instead of 'name'
         ];
     }
 
@@ -26,9 +27,11 @@ class SendMessageRequest extends FormRequest
             'session_id.required' => 'Session ID is required.',
             'session_id.uuid' => 'Invalid session ID format.',
             'session_id.exists' => 'Chat session does not exist.',
-            'message.required' => 'Message content is required.',
-            'message.max' => 'Message cannot be longer than 2000 characters.',
-            'name.max' => 'Name cannot be longer than 255 characters.',
+            'content.required' => 'Message content is required.', // Fixed field name
+            'content.max' => 'Message cannot be longer than 2000 characters.',
+            'sender_type.required' => 'Sender type is required.',
+            'sender_type.in' => 'Sender type must be either customer or agent.',
+            'sender_name.max' => 'Name cannot be longer than 255 characters.',
         ];
     }
 }

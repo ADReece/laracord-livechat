@@ -20,16 +20,16 @@ class ChatMessageTest extends TestCase
         ]);
 
         $message = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
             'sender_name' => 'John Doe',
-            'message' => 'Hello, I need help!',
+            'content' => 'Hello, I need help!', // Fixed: using correct field name
         ]);
 
         $this->assertInstanceOf(ChatMessage::class, $message);
         $this->assertEquals('customer', $message->sender_type);
         $this->assertEquals('John Doe', $message->sender_name);
-        $this->assertEquals('Hello, I need help!', $message->message);
+        $this->assertEquals('Hello, I need help!', $message->content);
     }
 
     /** @test */
@@ -42,9 +42,9 @@ class ChatMessageTest extends TestCase
         ]);
 
         $message = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
-            'message' => 'Test message',
+            'content' => 'Test message', // Fixed: using correct field name
         ]);
 
         $this->assertInstanceOf(ChatSession::class, $message->session);
@@ -61,15 +61,15 @@ class ChatMessageTest extends TestCase
         ]);
 
         $customerMessage = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
-            'message' => 'Customer message',
+            'content' => 'Customer message', // Fixed: using correct field name
         ]);
 
         $agentMessage = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'agent',
-            'message' => 'Agent message',
+            'content' => 'Agent message', // Fixed: using correct field name
         ]);
 
         $this->assertTrue($customerMessage->isFromCustomer());
@@ -88,9 +88,9 @@ class ChatMessageTest extends TestCase
         ]);
 
         $message = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
-            'message' => 'Test message',
+            'content' => 'Test message', // Fixed: using correct field name
             'is_read' => false,
         ]);
 
@@ -110,9 +110,9 @@ class ChatMessageTest extends TestCase
         ]);
 
         $message = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
-            'message' => 'Test message',
+            'content' => 'Test message', // Fixed: using correct field name
             'is_read' => 1, // Integer
         ]);
 
@@ -131,9 +131,9 @@ class ChatMessageTest extends TestCase
         $metadata = ['platform' => 'web', 'device' => 'desktop'];
 
         $message = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
-            'message' => 'Test message',
+            'content' => 'Test message', // Fixed: using correct field name
             'metadata' => $metadata,
         ]);
 

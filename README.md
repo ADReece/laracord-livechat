@@ -85,10 +85,28 @@ Available slash commands:
 
 ### Scheduler Configuration
 
-The package automatically schedules tasks using Laravel's built-in scheduler:
+**Important**: You must manually configure the scheduler in your Laravel application's `app/Console/Kernel.php` file.
 
-- **Discord monitoring**: Checks for new messages every minute (configurable)
-- **Session cleanup**: Removes old sessions daily at 2:00 AM (configurable)
+Add the following to your `schedule` method:
+
+```php
+protected function schedule(Schedule $schedule)
+{
+    // Monitor Discord channels for new messages
+    if (config('laracord-live-chat.scheduler.discord_monitoring.enabled', true)) {
+        $schedule->job(\ADReece\LaracordLiveChat\Jobs\MonitorDiscordMessages::class)
+                 ->everyMinute()
+                 ->withoutOverlapping()
+                 ->runInBackground();
+    }
+
+    // Clean up old chat sessions
+    if (config('laracord-live-chat.scheduler.cleanup.enabled', true)) {
+        $schedule->job(\ADReece\LaracordLiveChat\Jobs\CleanupChatSessions::class)
+                 ->dailyAt(config('laracord-live-chat.scheduler.cleanup.time', '02:00'));
+    }
+}
+```
 
 You can customize the scheduler behavior in your `.env` file:
 

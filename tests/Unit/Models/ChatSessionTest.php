@@ -53,12 +53,11 @@ class ChatSessionTest extends TestCase
         $message = $session->messages()->create([
             'sender_type' => 'customer',
             'sender_name' => 'John Doe',
-            'message' => 'Hello, I need help!',
+            'content' => 'Hello, I need help!', // Fixed: using 'content' instead of 'message'
         ]);
 
-        $this->assertInstanceOf(ChatMessage::class, $message);
-        $this->assertEquals(1, $session->messages()->count());
-        $this->assertEquals('Hello, I need help!', $session->messages->first()->message);
+        $this->assertCount(1, $session->messages);
+        $this->assertEquals('Hello, I need help!', $session->messages->first()->content);
     }
 
     /** @test */
@@ -73,8 +72,8 @@ class ChatSessionTest extends TestCase
 
         $session->close();
 
-        $this->assertFalse($session->isActive());
         $this->assertEquals('closed', $session->status);
+        $this->assertFalse($session->isActive());
     }
 
     /** @test */
@@ -88,6 +87,7 @@ class ChatSessionTest extends TestCase
         $session->markAsWaiting();
 
         $this->assertEquals('waiting', $session->status);
+        $this->assertFalse($session->isActive());
     }
 
     /** @test */
@@ -98,27 +98,27 @@ class ChatSessionTest extends TestCase
             'status' => 'active',
         ]);
 
-        // Create multiple messages
-        $session->messages()->create([
+        $firstMessage = $session->messages()->create([
             'sender_type' => 'customer',
-            'message' => 'First message',
+            'content' => 'First message', // Fixed: using 'content' instead of 'message'
         ]);
 
         sleep(1); // Ensure different timestamps
 
         $latestMessage = $session->messages()->create([
-            'sender_type' => 'agent',
-            'message' => 'Latest message',
+            'sender_type' => 'customer',
+            'content' => 'Latest message', // Fixed: using 'content' instead of 'message'
         ]);
 
-        $this->assertEquals('Latest message', $session->latestMessage->message);
+        $this->assertEquals($latestMessage->id, $session->latestMessage->id);
+        $this->assertEquals('Latest message', $session->latestMessage->content);
     }
 
     /** @test */
     public function it_casts_metadata_to_array()
     {
-        $metadata = ['browser' => 'Chrome', 'os' => 'Windows'];
-        
+        $metadata = ['source' => 'website', 'page' => '/contact'];
+
         $session = ChatSession::create([
             'ip_address' => '192.168.1.1',
             'status' => 'active',

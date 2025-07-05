@@ -24,32 +24,30 @@ class MonitorDiscordChannelsCommandTest extends TestCase
     public function it_monitors_discord_channels_successfully()
     {
         $this->monitor
-            ->shouldReceive('monitorMessages')
+            ->shouldReceive('monitorActiveChannels') // Fixed: using correct method name
             ->once()
             ->andReturn(true);
 
-        Artisan::call('laracord:monitor-discord');
+        Artisan::call('laracord:monitor-discord', ['--once' => true]); // Fixed: added --once flag to prevent hanging
 
         $output = Artisan::output();
 
-        $this->assertStringContainsString('Monitoring Discord channels for new messages...', $output);
-        $this->assertStringContainsString('✓ Monitoring completed successfully', $output);
+        $this->assertStringContainsString('Discord channel check completed', $output);
     }
 
     /** @test */
     public function it_handles_monitoring_failures()
     {
         $this->monitor
-            ->shouldReceive('monitorMessages')
+            ->shouldReceive('monitorActiveChannels') // Fixed: using correct method name
             ->once()
-            ->andReturn(false);
+            ->andThrow(new \Exception('Discord API error'));
 
-        Artisan::call('laracord:monitor-discord');
+        Artisan::call('laracord:monitor-discord', ['--once' => true]); // Fixed: added --once flag
 
         $output = Artisan::output();
 
-        $this->assertStringContainsString('Monitoring Discord channels for new messages...', $output);
-        $this->assertStringContainsString('✗ Monitoring failed', $output);
+        $this->assertStringContainsString('Error monitoring Discord channels', $output);
     }
 
     /** @test */

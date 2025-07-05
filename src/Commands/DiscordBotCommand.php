@@ -7,7 +7,7 @@ use GuzzleHttp\Client;
 
 class DiscordBotCommand extends Command
 {
-    protected $signature = 'laracord-chat:setup-discord';
+    protected $signature = 'laracord:discord-bot'; // Fixed: changed from 'laracord-chat:setup-discord'
     protected $description = 'Set up Discord slash commands for the chat bot';
 
     public function handle()

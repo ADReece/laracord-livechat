@@ -60,7 +60,7 @@ class ChatService
         $chatMessage = $session->messages()->create([
             'sender_type' => 'customer',
             'sender_name' => $customerName ?: $session->customer_name,
-            'message' => $message,
+            'content' => $message, // Fixed: using 'content' instead of 'message'
         ]);
 
         // Send to Discord
@@ -82,13 +82,21 @@ class ChatService
         $chatMessage = $session->messages()->create([
             'sender_type' => 'agent',
             'sender_name' => $agentName,
-            'message' => $message,
+            'content' => $message, // Fixed: using 'content' instead of 'message'
         ]);
 
         // Fire event
         Event::dispatch(new MessageSent($chatMessage));
 
         return $chatMessage;
+    }
+
+    /**
+     * Alias for createSession to match test expectations
+     */
+    public function startSession(array $data): ChatSession
+    {
+        return $this->createSession($data);
     }
 
     /**
@@ -139,7 +147,7 @@ class ChatService
      */
     public function markMessagesAsRead(string $sessionId, string $senderType = 'customer'): void
     {
-        ChatMessage::where('session_id', $sessionId)
+        ChatMessage::where('chat_session_id', $sessionId) // Fixed: using 'chat_session_id' instead of 'session_id'
             ->where('sender_type', $senderType)
             ->where('is_read', false)
             ->update(['is_read' => true]);

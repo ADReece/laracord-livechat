@@ -19,15 +19,18 @@ class DiscordMessageMonitorTest extends TestCase
 
     private $discordService;
     private $monitor;
+    private $chatService;
 
     protected function setUp(): void
     {
         parent::setUp();
         
         $this->discordService = Mockery::mock(DiscordService::class);
+        $this->chatService = Mockery::mock(ChatService::class); // Added missing ChatService mock
         $this->app->instance(DiscordService::class, $this->discordService);
-        
-        $this->monitor = new DiscordMessageMonitor($this->discordService);
+        $this->app->instance(ChatService::class, $this->chatService); // Register ChatService mock
+
+        $this->monitor = new DiscordMessageMonitor($this->discordService, $this->chatService); // Fixed: passing both required arguments
     }
 
     /** @test */

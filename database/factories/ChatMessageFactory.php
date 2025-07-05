@@ -10,73 +10,44 @@ class ChatMessageFactory extends Factory
 {
     protected $model = ChatMessage::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
             'chat_session_id' => ChatSession::factory(),
-            'content' => $this->faker->paragraph(),
             'sender_type' => $this->faker->randomElement(['customer', 'agent']),
-            'sender_name' => $this->faker->optional()->name(),
-            'discord_message_id' => $this->faker->optional()->numerify('############'),
-            'created_at' => $this->faker->dateTimeBetween('-1 hour', 'now'),
+            'sender_name' => $this->faker->name(),
+            'content' => $this->faker->sentence(),
+            'discord_message_id' => $this->faker->optional()->numerify('####################'),
+            'is_read' => $this->faker->boolean(),
+            'metadata' => null,
         ];
     }
 
-    public function fromCustomer()
+    public function customer(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'sender_type' => 'customer',
-                'sender_name' => $this->faker->name(),
-                'discord_message_id' => null,
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'sender_type' => 'customer',
+        ]);
     }
 
-    public function fromAgent()
+    public function agent(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'sender_type' => 'agent',
-                'sender_name' => $this->faker->name(),
-                'discord_message_id' => $this->faker->numerify('############'),
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'sender_type' => 'agent',
+        ]);
     }
 
-    public function withDiscordId()
+    public function unread(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'discord_message_id' => $this->faker->numerify('############'),
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'is_read' => false,
+        ]);
     }
 
-    public function withoutDiscordId()
+    public function read(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'discord_message_id' => null,
-            ];
-        });
-    }
-
-    public function recent()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'created_at' => $this->faker->dateTimeBetween('-5 minutes', 'now'),
-            ];
-        });
-    }
-
-    public function old()
-    {
-        return $this->state(function (array $attributes) {
-            return [
-                'created_at' => $this->faker->dateTimeBetween('-2 hours', '-1 hour'),
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'is_read' => true,
+        ]);
     }
 }

@@ -65,16 +65,33 @@ php artisan laracord-chat:setup-discord
 php artisan schedule:run
 ```
 
-### 5. Schedule Cleanup (Optional)
+### 5. Schedule Tasks (Required)
 
-Add this to your `app/Console/Kernel.php`:
+Add the following to your `app/Console/Kernel.php` file's `schedule` method:
 
 ```php
 protected function schedule(Schedule $schedule)
 {
-    $schedule->job(new \Swoopy\LaracordLiveChat\Jobs\CleanupChatSessions)
-             ->daily();
+    // Monitor Discord channels for new messages
+    if (config('laracord-live-chat.scheduler.discord_monitoring.enabled', true)) {
+        $schedule->job(\ADReece\LaracordLiveChat\Jobs\MonitorDiscordMessages::class)
+                 ->everyMinute()
+                 ->withoutOverlapping()
+                 ->runInBackground();
+    }
+
+    // Clean up old chat sessions (optional)
+    if (config('laracord-live-chat.scheduler.cleanup.enabled', true)) {
+        $schedule->job(\ADReece\LaracordLiveChat\Jobs\CleanupChatSessions::class)
+                 ->dailyAt(config('laracord-live-chat.scheduler.cleanup.time', '02:00'));
+    }
 }
+```
+
+**Important**: Don't forget to set up your server's crontab to run the Laravel scheduler:
+
+```bash
+* * * * * cd /path/to/your/project && php artisan schedule:run >> /dev/null 2>&1
 ```
 
 ## Advanced Usage

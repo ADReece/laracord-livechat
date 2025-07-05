@@ -99,10 +99,10 @@ class DiscordServiceTest extends TestCase
         ]);
 
         $message = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
             'sender_name' => 'John Doe',
-            'message' => 'Hello, I need help!',
+            'content' => 'Hello, I need help!', // Fixed: using correct field name
         ]);
 
         $result = $this->discordService->sendNewChatMessage($session, $message);
@@ -121,9 +121,9 @@ class DiscordServiceTest extends TestCase
         ]);
 
         $message = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
-            'message' => 'Hello!',
+            'content' => 'Hello!', // Fixed: using correct field name
         ]);
 
         $result = $this->discordService->sendNewChatMessage($session, $message);
@@ -215,9 +215,9 @@ class DiscordServiceTest extends TestCase
         ]);
 
         $message = ChatMessage::create([
-            'session_id' => $session->id,
+            'chat_session_id' => $session->id, // Fixed: using correct field name
             'sender_type' => 'customer',
-            'message' => $longMessage,
+            'content' => $longMessage, // Fixed: using correct field name
         ]);
 
         $this->mockHandler->append(

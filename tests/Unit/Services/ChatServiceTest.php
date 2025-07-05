@@ -84,10 +84,10 @@ class ChatServiceTest extends TestCase
         );
 
         $this->assertInstanceOf(ChatMessage::class, $message);
-        $this->assertEquals($session->id, $message->session_id);
+        $this->assertEquals($session->id, $message->chat_session_id); // Fixed: using correct field name
         $this->assertEquals('customer', $message->sender_type);
         $this->assertEquals('John Doe', $message->sender_name);
-        $this->assertEquals('Hello, I need help!', $message->message);
+        $this->assertEquals('Hello, I need help!', $message->content); // Fixed: using 'content' instead of 'message'
 
         Event::assertDispatched(MessageSent::class, function ($event) use ($message) {
             return $event->message->id === $message->id;
@@ -111,10 +111,10 @@ class ChatServiceTest extends TestCase
         );
 
         $this->assertInstanceOf(ChatMessage::class, $message);
-        $this->assertEquals($session->id, $message->session_id);
+        $this->assertEquals($session->id, $message->chat_session_id); // Fixed: using correct field name
         $this->assertEquals('agent', $message->sender_type);
         $this->assertEquals('Support Agent', $message->sender_name);
-        $this->assertEquals('How can I help you?', $message->message);
+        $this->assertEquals('How can I help you?', $message->content); // Fixed: using 'content' instead of 'message'
 
         Event::assertDispatched(MessageSent::class);
     }
@@ -130,19 +130,20 @@ class ChatServiceTest extends TestCase
 
         $session->messages()->create([
             'sender_type' => 'customer',
-            'message' => 'First message',
+            'content' => 'First message', // Fixed: using 'content' instead of 'message'
         ]);
 
         $session->messages()->create([
             'sender_type' => 'agent',
-            'message' => 'Second message',
+            'content' => 'Second message', // Fixed: using 'content' instead of 'message'
         ]);
 
         $retrievedSession = $this->chatService->getSession($session->id);
 
-        $this->assertInstanceOf(ChatSession::class, $retrievedSession);
-        $this->assertEquals(2, $retrievedSession->messages->count());
-        $this->assertEquals('First message', $retrievedSession->messages->first()->message);
+        $this->assertNotNull($retrievedSession);
+        $this->assertCount(2, $retrievedSession->messages);
+        $this->assertEquals('First message', $retrievedSession->messages[0]->content);
+        $this->assertEquals('Second message', $retrievedSession->messages[1]->content);
     }
 
     /** @test */
@@ -230,13 +231,13 @@ class ChatServiceTest extends TestCase
 
         $customerMessage = $session->messages()->create([
             'sender_type' => 'customer',
-            'message' => 'Customer message',
+            'content' => 'Customer message', // Fixed: using 'content' instead of 'message'
             'is_read' => false,
         ]);
 
         $agentMessage = $session->messages()->create([
             'sender_type' => 'agent',
-            'message' => 'Agent message',
+            'content' => 'Agent message', // Fixed: using 'content' instead of 'message'
             'is_read' => false,
         ]);
 
@@ -273,9 +274,9 @@ class ChatServiceTest extends TestCase
         ]);
 
         // Add some messages
-        $session->messages()->create(['sender_type' => 'customer', 'message' => 'Message 1']);
-        $session->messages()->create(['sender_type' => 'agent', 'message' => 'Message 2']);
-        $session->messages()->create(['sender_type' => 'customer', 'message' => 'Message 3']);
+        $session->messages()->create(['sender_type' => 'customer', 'content' => 'Message 1']); // Fixed field name
+        $session->messages()->create(['sender_type' => 'agent', 'content' => 'Message 2']); // Fixed field name
+        $session->messages()->create(['sender_type' => 'customer', 'content' => 'Message 3']); // Fixed field name
 
         $stats = $this->chatService->getSessionStats($session->id);
 

@@ -6,7 +6,7 @@ use Illuminate\Console\Command;
 
 class InstallCommand extends Command
 {
-    protected $signature = 'laracord-chat:install';
+    protected $signature = 'laracord:install'; // Fixed: changed from 'laracord-chat:install'
     protected $description = 'Install Laracord Live Chat package';
 
     public function handle()

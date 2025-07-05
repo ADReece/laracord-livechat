@@ -8,7 +8,7 @@ use ADReece\LaracordLiveChat\Services\ChatService;
 
 class ScheduleStatusCommand extends Command
 {
-    protected $signature = 'laracord-chat:schedule-status';
+    protected $signature = 'laracord:schedule-status'; // Fixed: changed from 'laracord-chat:schedule-status'
     protected $description = 'Show the status of Laracord Live Chat scheduled tasks';
 
     public function handle()

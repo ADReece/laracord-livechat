@@ -9,63 +9,44 @@ class ChatSessionFactory extends Factory
 {
     protected $model = ChatSession::class;
 
-    public function definition()
+    public function definition(): array
     {
         return [
             'customer_name' => $this->faker->name(),
-            'customer_email' => $this->faker->email(),
-            'status' => $this->faker->randomElement(['pending', 'active', 'closed']),
-            'discord_channel_id' => $this->faker->optional()->numerify('############'),
-            'started_at' => $this->faker->dateTimeBetween('-1 hour', 'now'),
-            'last_activity' => $this->faker->dateTimeBetween('-30 minutes', 'now'),
-            'closed_at' => null,
-            'closure_reason' => null,
+            'customer_email' => $this->faker->optional()->safeEmail(),
+            'ip_address' => $this->faker->ipv4(),
+            'user_agent' => $this->faker->userAgent(),
+            'status' => 'active',
+            'discord_channel_id' => $this->faker->optional()->numerify('####################'),
+            'metadata' => null,
         ];
     }
 
-    public function active()
+    public function active(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'status' => 'active',
-                'closed_at' => null,
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'status' => 'active',
+        ]);
     }
 
-    public function closed()
+    public function closed(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'status' => 'closed',
-                'closed_at' => $this->faker->dateTimeBetween('-1 hour', 'now'),
-                'closure_reason' => $this->faker->optional()->randomElement([
-                    'Resolved by customer',
-                    'Resolved by agent',
-                    'Automatically closed due to inactivity',
-                    'Customer disconnected',
-                ]),
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'status' => 'closed',
+        ]);
     }
 
-    public function withDiscordChannel()
+    public function waiting(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'discord_channel_id' => $this->faker->numerify('############'),
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'status' => 'waiting',
+        ]);
     }
 
-    public function pending()
+    public function withDiscordChannel(): static
     {
-        return $this->state(function (array $attributes) {
-            return [
-                'status' => 'pending',
-                'discord_channel_id' => null,
-                'closed_at' => null,
-            ];
-        });
+        return $this->state(fn (array $attributes) => [
+            'discord_channel_id' => $this->faker->numerify('####################'),
+        ]);
     }
 }
