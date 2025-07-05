@@ -10,17 +10,17 @@ return new class extends Migration
     {
         Schema::create('chat_messages', function (Blueprint $table) {
             $table->id();
-            $table->uuid('session_id');
+            $table->uuid('chat_session_id');
             $table->enum('sender_type', ['customer', 'agent']);
             $table->string('sender_name')->nullable();
-            $table->text('message');
+            $table->text('content');
             $table->string('discord_message_id')->nullable();
             $table->boolean('is_read')->default(false);
             $table->json('metadata')->nullable();
             $table->timestamps();
 
-            $table->foreign('session_id')->references('id')->on('chat_sessions')->onDelete('cascade');
-            $table->index(['session_id', 'created_at']);
+            $table->foreign('chat_session_id')->references('id')->on('chat_sessions')->onDelete('cascade');
+            $table->index(['chat_session_id', 'created_at']);
         });
     }
 

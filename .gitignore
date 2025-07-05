@@ -1,0 +1,31 @@
+# Dependencies
+vendor/
+node_modules/
+
+# Laravel
+.env
+.env.local
+.env.*.local
+storage/logs/*
+storage/framework/cache/*
+storage/framework/sessions/*
+storage/framework/views/*
+bootstrap/cache/*
+
+# Testing
+coverage/
+.phpunit.result.cache
+phpunit.xml.bak
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Package specific
+config/laracord-live-chat.php

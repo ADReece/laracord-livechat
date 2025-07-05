@@ -2,18 +2,21 @@
 
 namespace ADReece\LaracordLiveChat\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ChatMessage extends Model
 {
+    use HasFactory;
+
     protected $table = 'chat_messages';
 
     protected $fillable = [
-        'session_id',
+        'chat_session_id',
         'sender_type',
         'sender_name',
-        'message',
+        'content',
         'discord_message_id',
         'is_read',
         'metadata',
@@ -26,7 +29,7 @@ class ChatMessage extends Model
 
     public function session(): BelongsTo
     {
-        return $this->belongsTo(ChatSession::class, 'session_id');
+        return $this->belongsTo(ChatSession::class, 'chat_session_id');
     }
 
     public function isFromCustomer(): bool
@@ -42,5 +45,10 @@ class ChatMessage extends Model
     public function markAsRead(): void
     {
         $this->update(['is_read' => true]);
+    }
+
+    protected static function newFactory()
+    {
+        return \ADReece\LaracordLiveChat\Database\Factories\ChatMessageFactory::new();
     }
 }

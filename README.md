@@ -114,6 +114,71 @@ The configuration file `config/laracord-live-chat.php` allows you to customize:
 - Chat widget appearance
 - Rate limiting
 
+## Testing
+
+This package includes a comprehensive test suite covering all major functionality.
+
+### Running Tests
+
+#### Quick Start
+```bash
+# Run all tests
+./run-tests.sh
+
+# Run with coverage report
+./run-tests.sh --coverage
+
+# Run specific test suites
+./vendor/bin/phpunit --testsuite=Unit
+./vendor/bin/phpunit --testsuite=Feature
+```
+
+#### Manual Testing
+```bash
+# Install test dependencies
+composer install
+
+# Run unit tests only
+./vendor/bin/phpunit tests/Unit
+
+# Run feature tests only
+./vendor/bin/phpunit tests/Feature
+
+# Run with coverage
+./vendor/bin/phpunit --coverage-html coverage
+```
+
+### Test Coverage
+
+The test suite covers:
+
+- **Models**: ChatSession, ChatMessage with factories and relationships
+- **Services**: ChatService, DiscordService, DiscordMessageMonitor with mocked HTTP calls
+- **HTTP Controllers**: ChatController, DiscordController with request/response testing
+- **Jobs**: MonitorDiscordMessages, CleanupChatSessions with queue testing
+- **Commands**: Install, Discord Bot setup, Monitor, Schedule Status
+- **Events**: MessageSent, SessionStarted, SessionClosed with broadcasting
+- **HTTP Requests**: StartSessionRequest, SendMessageRequest validation
+- **Service Provider**: Configuration, routes, commands registration
+- **Integration**: End-to-end chat workflows and Discord synchronization
+
+### Test Architecture
+
+- **Unit Tests**: Test individual components in isolation using mocks
+- **Feature Tests**: Test HTTP endpoints and complete workflows
+- **Integration Tests**: Test entire chat scenarios from start to finish
+- **Factories**: Generate realistic test data for models
+- **Mocking**: Discord API calls and external services are mocked for reliable testing
+
+### Test Configuration
+
+Tests use an in-memory SQLite database and mock external services:
+
+- Discord API calls are mocked using Mockery
+- Broadcasting events are faked using Laravel's Event fake
+- Database transactions ensure test isolation
+- Orchestra Testbench provides Laravel testing environment
+
 ## License
 
 The MIT License (MIT).
